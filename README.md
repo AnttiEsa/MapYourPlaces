@@ -16,7 +16,7 @@ Shows bikestation addresses (finnish and swedish), capacity, name and city.
 
 ## Installation
 
-Install my-project with npm
+Create .env file in your project directory (check .env_example for example content).
 
 ```bash
   npm install my-project
