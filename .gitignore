@@ -11,6 +11,9 @@ __pycache__/
 # C extensions
 *.so
 
+# Database needs to be ingored
+*.db
+
 # Distribution / packaging
 .Python
 build/
