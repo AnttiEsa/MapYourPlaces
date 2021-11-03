@@ -1,5 +1,4 @@
 from flask import Flask, render_template, request, redirect
-from database.operations import insert_data
 from api import get_json
 from database.operations import truncateTable, getRows, columnError
 import os
@@ -31,9 +30,9 @@ def maps():
             csvFile = request.files["formFile"]
             
             if csvFile and allowed_file(csvFile.filename):               
-                if(columnError() == False):
+                if(columnError(csvFile.filename) == False):
                     truncateTable()
-                    getRows()
+                    getRows(csvFile.filename)
                 else:
                     fileErrors["columnNameError"] = 1
                     return render_template('maps.html', columnNameError = fileErrors["columnNameError"], YOUR_API_KEY = APP_KEY)
@@ -42,9 +41,6 @@ def maps():
         return render_template('maps.html', columnNameError = fileErrors["columnNameError"], YOUR_API_KEY = APP_KEY)
     else:
         return render_template('maps.html', columnNameError = fileErrors["columnNameError"], YOUR_API_KEY = APP_KEY)
-
-    
-
 
 @app.route('/api/all')
 def api():

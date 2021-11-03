@@ -5,7 +5,6 @@ from database import Places, Session, sessionmaker
 from sqlalchemy import or_
 from sqlalchemy.orm import load_only
 import pandas as pd
-from app import csvFile
 
 def __get_session():
     return Session()
@@ -42,7 +41,7 @@ def is_float(value):
   except:
     return False
 
-def columnError():
+def columnError(csvFile):
     with open(csvFile.filename, newline='', encoding='utf-8') as f:
         reader = csv.reader(f)
 
@@ -54,7 +53,7 @@ def columnError():
         else:
             return True
 
-def getRows():
+def getRows(csvFile):
     with open(csvFile.filename, newline='', encoding='utf-8') as f:
         reader = csv.reader(f)
         line_count = 0
