@@ -7,10 +7,9 @@ import os
 app = Flask(__name__)
 
 # Google API key
-api_file = open('gMap-key.txt', 'r')
-app_key= api_file.read()
-api_file.close()
-column_error = columnError()
+
+APP_KEY = os.environ['GOOGLE_MAPS_API_KEY']
+
 """TO DO APP CONFIG FILE"""
 
 UPLOAD_FOLDER = "c:\\bootcamp\YWBD"
@@ -41,12 +40,12 @@ def maps():
                     getRows()
                 else:
                     fileErrors["columnNameError"] = 1
-                    return render_template('maps.html', columnNameError = fileErrors["columnNameError"])
+                    return render_template('maps.html', columnNameError = fileErrors["columnNameError"], YOUR_API_KEY = APP_KEY)
 
             return redirect(request.url)
-        return render_template('maps.html', columnNameError = fileErrors["columnNameError"])
+        return render_template('maps.html', columnNameError = fileErrors["columnNameError"], YOUR_API_KEY = APP_KEY)
     else:
-        return render_template('maps.html', columnNameError = fileErrors["columnNameError"])
+        return render_template('maps.html', columnNameError = fileErrors["columnNameError"], YOUR_API_KEY = APP_KEY)
 
     
 
