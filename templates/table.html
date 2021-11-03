@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block header %}
+      <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.css">
+      <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.js"></script>
+{% endblock %}
+{% block nav_table %}active{% endblock %}
+{% block body %}
+
+<div class="container mt-5">
+<div class="row">
+<h1>Map your places</h1>
+
+<table id="data" class="display" style="width:100%">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Longitude</th>
+            <th>Latitude</th>
+        </tr>
+    </thead>
+    <tfoot>
+        <tr>
+            <th>Name</th>
+            <th>Longitude</th>
+            <th>Latitude</th>        
+        </tr>
+    </tfoot>
+</table>
+</div>
+</div>
+
+{% endblock %}
+{% block footer%} 
+<script>
+    $(document).ready(function() {
+        $('#data').DataTable( {
+            "ajax": '/api/all',
+            responsive: true,
+  columnDefs: [{
+    targets: [1,2],
+    
+    render(v){
+      return Number(v).toFixed(3) 
+    }
+  }]            
+        } );
+    } );
+</script>
+{% endblock%}

@@ -1,0 +1,182 @@
+{% extends "base.html" %} {% block header %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<style>
+      /* Always set the map height explicitly to define the size of the div
+    * element that contains the map. */
+      #map {
+            width: 100%;
+            min-height: 700px;
+      }
+
+      /* Optional: Makes the sample page fill the window. */
+</style>
+{% endblock %} {% block nav_map%}active{% endblock %} {% block body %}
+
+<div class="container mt-5">
+      <div class="row text-center">
+            <h1>Map Your Places</h1>
+      </div>
+      <div class="row">
+            <div class="mb-3">
+                  <form action="/maps/" method="POST" enctype="multipart/form-data">
+                        <div class="row">
+                              <div class="col-md-9">
+                                    <div class="form-group">
+
+                                          <input class="form-control" type="file" id="formFile" name="formFile" accept="csv, csv, text/csv">
+                                    </div>
+                              </div>
+                              <div class="col mt-2 mt-md-0">
+                                    <button class="btn btn-primary" type="submit">Lataa tiedosto</button>
+                              </div>
+                        </div>
+
+
+                  </form>
+            </div>
+            </row>
+            <div class="row">
+
+                  <div id="map"></div>
+          
+
+            </div>
+      </div>
+
+      {% endblock %} {% block footer%}
+
+
+      <script>
+      
+      var erLocations = ['', 0, 0];
+console.log('{{columnNameError}}')
+
+            if('{{columnNameError}}'==1) {
+                  erLocations = ['Helsinki', 60.17117850704916, 24.942684108118346];
+                  swal("Your csv-file is incorrect", "Make sure your csv-file contains columns Name, x and y where x and y are coordinates.", "error");
+            }
+
+
+            var locations = [];
+            var array_lon_lat = [];
+            function createLocations() {
+                  $.ajax({
+                        url: "http://127.0.0.1:5001/api/all",
+                        dataType: "json",
+                        success: function (data) {
+                              if(erLocations[1] == 0) {
+
+                                    $.each(data, function (key, val) {
+                                          for (var $i = 0; $i < val.length; $i++) {
+                                                locations[$i] = [
+                                                      String(val[$i][0]),
+                                                      val[$i][1],
+                                                      val[$i][2],
+                                                      parseInt($i + 1),
+                                                ];
+
+                                                array_lon_lat[$i] = [
+                                                      val[$i][1],
+                                                      val[$i][2],
+                                                ];
+                                          }
+                                    });
+
+
+                                    initMap(locations, getCenterFromDegrees(array_lon_lat));
+                              } else {
+                                    initMap(erLocations, erLocations.slice(1));
+                              }
+                        },
+                  });
+            }
+
+            // When the user clicks the marker, an info window opens.
+            function getCenterFromDegrees(array_lon_lat) {
+
+
+                  if (!$.isArray(array_lon_lat)) return false;
+
+                  let num_coords = array_lon_lat.length;
+
+                  let X = 0.0;
+                  let Y = 0.0;
+                  let Z = 0.0;
+                  let lat = 0.0;
+                  let lon = 0.0;
+                  let hyp = 0.0;
+                  let a = 0.0
+                  let b = 0.0
+                  let c = 0.0
+                  let setLocation = [];
+
+                  for (var i = 0; i < array_lon_lat.length; i++) {
+
+                        lat = array_lon_lat[i][1] * Math.PI / 180;
+                        lon = array_lon_lat[i][0] * Math.PI / 180;
+
+                        a = Math.cos(lat) * Math.cos(lon);
+                        b = Math.cos(lat) * Math.sin(lon);
+                        c = Math.sin(lat);
+
+                        X += a;
+                        Y += b;
+                        Z += c;
+
+                  }
+
+
+                  X /= num_coords;
+                  Y /= num_coords;
+                  Z /= num_coords;
+
+                  lon = Math.atan2(Y, X);
+                  hyp = Math.sqrt(X * X + Y * Y);
+                  lat = Math.atan2(Z, hyp);
+
+                  setLocation.push(lat * 180 / Math.PI);
+                  setLocation.push(lon * 180 / Math.PI);
+
+                  return setLocation;
+
+            }
+
+
+            function initMap(locations, centerPlace) {
+
+                  console.log(locations[0]);
+                  console.log("HERE" + centerPlace);
+                  var map = new google.maps.Map(document.getElementById("map"), {
+                        zoom: 11,
+                        center: new google.maps.LatLng(centerPlace[0], centerPlace[1]),
+                        mapTypeId: google.maps.MapTypeId.ROADMAP,
+                  });
+
+                  var count = 0;
+
+                  for (count = 0; count < locations.length; count++) {
+                        var marker = new google.maps.Marker({
+                              position: new google.maps.LatLng(
+                                    locations[count][2],
+                                    locations[count][1]
+                              ),
+                              map: map,
+                        });
+
+                        marker.info = new google.maps.InfoWindow({
+                              content: locations[count][0],
+                        });
+
+                        google.maps.event.addListener(marker, "click", function () {
+                              // this = marker
+                              var marker_map = this.getMap();
+                              this.info.open(marker_map, this);
+                              // Note: If you call open() without passing a marker, the InfoWindow will use the position specified upon construction through the InfoWindowOptions object literal.
+                        });
+                  }
+            }
+      </script>
+      <script async defer
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC00eWqEvvIeKsCJbt3pNjikhfQfVEv7JY&callback=createLocations"></script>
+      {% endblock%}
