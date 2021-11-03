@@ -1,18 +1,15 @@
 
-# Bikestation locator
+# Map your places
 
-Helsinki and Espoo bikestation locator and capacity viewer based on data from [avoindata.fi](https://www.avoindata.fi/data/fi/dataset/hsl-n-kaupunkipyoraasemat).
+ Locate your favorite places on google maps. Upload .csv -file with columns: "Name", "x" and "y" where x and y are coordinates and app will show these places.
 
 ## Map
 
-Shows all bikestations in cities of Helsinki and Espoo in Google Maps and allows you to 
-search the nearest bikestation and distance and route to there.
+Shows your mapped places on google map.
 
 ## Table
 
-Shows bikestation addresses (finnish and swedish), capacity, name and city.
-
-
+Shows your places names and coordinates
 
 ## Installation
 

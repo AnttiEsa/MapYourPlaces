@@ -11,6 +11,9 @@ __pycache__/
 # C extensions
 *.so
 
+# Google-map api-key
+gMap-key.txt
+
 # Database needs to be ingored
 *.db
 
@@ -33,6 +36,10 @@ share/python-wheels/
 .installed.cfg
 *.egg
 MANIFEST
+
+# CSV-files
+*.csv
+
 
 # PyInstaller
 #  Usually these files are written by a python script from a template
