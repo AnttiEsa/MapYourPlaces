@@ -3,8 +3,7 @@ from sqlalchemy import create_engine, text
 from sqlalchemy.ext.declarative import declarative_base
 """Orm classes and orm itself"""
 from sqlalchemy import Column, String, Integer, Float
-from sqlalchemy.orm import sessionmaker
-
+from sqlalchemy.orm import sessionmaker, load_only
 import os
 
 """To read .env file and its variables"""
@@ -15,24 +14,21 @@ load_dotenv()
 
 Base = declarative_base()
 
-class License(Base):
+class Places(Base):
     """
     Describe the table and its content
     """
 
-    __tablename__ = 'bikestations'
+    __tablename__ = 'myPlaces'
 
     id = Column(Integer, primary_key = True)
     name = Column(String(255))
-    address = Column(String(255))
-    city = Column(String(255))
-    capacity = Column(Integer)
-    coordinates_lon = Column(Float)
-    coordinates_lat = Column(Float)
+    x = Column(Float)
+    y = Column(Float)
 
     def __repr__(self):
         """String representation of the object"""
-        return f"Bikestation (name='{self.name}, capacity='{self.capacity}'"
+        return f"Places (name='{self.name}'"
 
 DATABASE_URL = os.environ['DATABASE_URL']
 
