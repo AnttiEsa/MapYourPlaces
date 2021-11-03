@@ -5,6 +5,7 @@ from database import Places, Session, sessionmaker
 from sqlalchemy import or_
 from sqlalchemy.orm import load_only
 import pandas as pd
+from app import csvFile
 
 def __get_session():
     return Session()
@@ -42,10 +43,10 @@ def is_float(value):
     return False
 
 def columnError():
-    with open("data.csv", newline='', encoding='utf-8') as f:
+    with open(csvFile.filename, newline='', encoding='utf-8') as f:
         reader = csv.reader(f)
 
-        places = pd.read_csv('data.csv', error_bad_lines=False)
+        places = pd.read_csv(csvFile.filename, error_bad_lines=False)
 
         #Check if the required values are found from the first row
         if {'Name', 'x', 'y'}.issubset(places.columns):
@@ -54,11 +55,11 @@ def columnError():
             return True
 
 def getRows():
-    with open("data.csv", newline='', encoding='utf-8') as f:
+    with open(csvFile.filename, newline='', encoding='utf-8') as f:
         reader = csv.reader(f)
         line_count = 0
 
-        places = pd.read_csv('data.csv', error_bad_lines=False)
+        places = pd.read_csv(csvFile.filename, error_bad_lines=False)
         name_id = -1
         x_id    = -1
         y_id    = -1

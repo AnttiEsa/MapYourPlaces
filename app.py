@@ -12,10 +12,7 @@ APP_KEY = os.environ['GOOGLE_MAPS_API_KEY']
 
 """TO DO APP CONFIG FILE"""
 
-UPLOAD_FOLDER = "c:\\bootcamp\YWBD"
 ALLOWED_EXTENSIONS = {'csv'}
-
-app.config['CSV_UPLOADS'] = UPLOAD_FOLDER
 
 def allowed_file(filename):
     return '.' in filename and \
@@ -31,10 +28,9 @@ def maps():
     if request.method == "POST":
         
         if request.files:
-            csv = request.files["formFile"]
+            csvFile = request.files["formFile"]
             
-            if csv and allowed_file(csv.filename):               
-                csv.save(os.path.join(app.config['CSV_UPLOADS'], "data.csv"))
+            if csvFile and allowed_file(csvFile.filename):               
                 if(columnError() == False):
                     truncateTable()
                     getRows()
