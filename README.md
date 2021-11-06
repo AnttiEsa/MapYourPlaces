@@ -19,7 +19,7 @@ Shows your selected places names and coordinates.
 - [x] Read csv to database
 - [x] Google Maps API
 - [x] Front End
-- [] Deploy to heroku
+- [ ] Deploy to heroku
 
 ## Screenshots
 
