@@ -25,7 +25,7 @@ Shows your selected places names and coordinates.
 
 ![App Screenshot](screenshots/mapyourplaces.jpg)
 
-Error, if requested columns were not founded in csv-file
+Error, if requested columns were not found in csv-file
 
 ![App Screenshot](screenshots/error.jpg)
 
