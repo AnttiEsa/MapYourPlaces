@@ -55,12 +55,6 @@ Create .env -file (see the constructions from .env_example)
   touch .env
 ```
 
-Open the directory in your local system with an editor like VSCode (used in this example)
-
-```bash
-  code .
-```
-
 Open the .env_example - .env -files and edit .env file (add your API_KEY and DATABASE_URL)
 
 ```bash
